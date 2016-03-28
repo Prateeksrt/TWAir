@@ -45,4 +45,17 @@ public class FlightSearch {
         }
         return new FlightSearch(matchingFlights);
     }
+
+    public FlightSearch byAvailableSeats(int numberOfSeats) {
+        if(numberOfSeats < 0) {
+            throw new IllegalArgumentException("number of seats can not be negative");
+        }
+        List<Flight> matchingFlights = new ArrayList<>();
+        for (Flight flight : flightList) {
+            if(flight.availableSeats() >= numberOfSeats) {
+                matchingFlights.add(flight);
+            }
+        }
+        return new FlightSearch(matchingFlights);
+    }
 }

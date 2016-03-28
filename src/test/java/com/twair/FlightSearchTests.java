@@ -24,8 +24,9 @@ public class FlightSearchTests {
         arrival = new GregorianCalendar(2016,3,10, 10, 10, 0);
 
         Plane plane1 = new Plane("type1", 30);
-        Flight flight1 = new Flight(source, destination, plane1, new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 11, 10, 0));
-        Flight flight2 = new Flight(source, destination, plane1, new GregorianCalendar(2016,4,10, 9, 10, 0), new GregorianCalendar(2016,4,10, 11, 10, 0));
+        Plane plane2 = new Plane("type1", 5);
+        Flight flight1 = new Flight("F001", source, destination, plane1, new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 11, 10, 0));
+        Flight flight2 = new Flight("F002", source, destination, plane2, new GregorianCalendar(2016,4,10, 9, 10, 0), new GregorianCalendar(2016,4,10, 11, 10, 0));
 
         List<Flight> flightList = new ArrayList<>();
         flightList.add(flight1);
@@ -37,9 +38,9 @@ public class FlightSearchTests {
     public void shouldReturnListOfFlightsForSourceDestination() throws Exception {
         Plane plane1 = new Plane("type1", 30);
         Plane plane2 = new Plane("type2", 60);
-        Flight flight1 = new Flight(source, destination, plane1, departure, arrival);
-        Flight flight2 = new Flight("TestSource1", destination, plane2, departure, arrival);
-        Flight flight3 = new Flight(source, destination, plane1, departure, arrival);
+        Flight flight1 = new Flight("F001", source, destination, plane1, departure, arrival);
+        Flight flight2 = new Flight("F002", "TestSource1", destination, plane2, departure, arrival);
+        Flight flight3 = new Flight("F003", source, destination, plane1, departure, arrival);
         List<Flight> flightList = new ArrayList<>();
         flightList.add(flight1);
         flightList.add(flight2);
@@ -89,4 +90,19 @@ public class FlightSearchTests {
         List<Flight> flights = allFlights.byDeparture(null).getFlightList();
         Assert.assertEquals(2, flights.size());
     }
+
+    @Test
+    public void shouldFilterByAvailableSeats() throws Exception {
+        int numberOfSeats = 10;
+        List<Flight> matchingFlights = allFlights.byAvailableSeats(numberOfSeats).getFlightList();;
+        Assert.assertEquals(source, matchingFlights.get(0).getSource());
+        Assert.assertEquals(destination, matchingFlights.get(0).getDestination());
+        Assert.assertEquals(1, matchingFlights.size());
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void numberOfSeatsCannotBeNegative() throws Exception {
+        allFlights.byAvailableSeats(-10);
+    }
+
 }

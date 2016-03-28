@@ -25,7 +25,7 @@ public class FlightTests {
 
     @Test
     public void shouldHaveSourceDestination() throws Exception {
-        Flight flight = new Flight(source, dest, plane, departure, arrival);
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival);
         Assert.assertEquals(source, flight.getSource());
         Assert.assertEquals(dest, flight.getDestination());
     }
@@ -34,7 +34,7 @@ public class FlightTests {
     public void shouldHaveArrivalAndDeparture() throws Exception {
         Calendar departure = new GregorianCalendar(2016,4,10, 9, 10, 0);
         Calendar arrival = new GregorianCalendar(2016,4,10, 11, 10, 0);
-        Flight flight = new Flight(source, dest, plane, departure, arrival);
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival);
         Assert.assertEquals(departure, flight.getDepartureTime());
         Assert.assertEquals(arrival, flight.getArrivalTime());
     }
@@ -43,19 +43,18 @@ public class FlightTests {
     public void DepartureDateCannotBeGreaterOrEqualToArrivalTime() throws Exception {
         Calendar departure = new GregorianCalendar(2016,5,10, 9, 10, 0);
         Calendar arrival = new GregorianCalendar(2016,4,10, 11, 10, 0);
-        Flight flight = new Flight(source, dest, plane, departure, arrival);
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival);
     }
 
     @Test
-    public void shouldHaveSeats() throws Exception {
-        Flight flight = new Flight(source, dest, plane, departure, arrival);
-        flight.setNumberOfSeats(30);
-        Assert.assertEquals(30, flight.getNumberOfSeats());
+    public void availableSeatsShouldBeAsPlaneSeatsByDefault() throws Exception {
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival);
+        Assert.assertEquals(30, flight.availableSeats());
     }
 
     @Test
     public void shouldHaveBasePrice() throws Exception {
-        Flight flight = new Flight(source, dest, plane, departure, arrival);
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival);
         flight.setBasePrice(1000);
         Assert.assertEquals(1000, flight.getBasePrice());
     }

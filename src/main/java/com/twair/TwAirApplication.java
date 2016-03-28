@@ -8,21 +8,30 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
+
 @Controller
 @EnableAutoConfiguration
 public class TwAirApplication {
 	@RequestMapping("/")
 	public String home(Model model) {
-        model.addAttribute("locations", DataSource.fetchLocations());
+        model.addAttribute("locations", DataSource.instance().fetchLocations());
 		return "FlightSearch";
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String search(@ModelAttribute(value="searchForm") SearchForm searchForm, Model model) throws Exception {
-		FlightSearch matchingFlights = DataSource.fetchFlights().byLocation(searchForm.getFrom(), searchForm.getTo());
-		matchingFlights = matchingFlights.byDeparture(searchForm.getDepartureDate());
-		model.addAttribute("flights", matchingFlights.getFlightList());
-		model.addAttribute("locations", DataSource.fetchLocations());
+		model.addAttribute("locations", DataSource.instance().fetchLocations());
+		try {
+			FlightSearch matchingFlights = DataSource.instance().fetchFlights().byLocation(searchForm.getFrom(), searchForm.getTo());
+			matchingFlights = matchingFlights.byDeparture(searchForm.getDepartureDate());
+			matchingFlights = matchingFlights.byAvailableSeats(searchForm.getNumberSeats());
+			model.addAttribute("flights", matchingFlights.getFlightList());
+			model.addAttribute("flightPriceMap", new Price().calculate(matchingFlights.getFlightList(), searchForm.getNumberSeats()));
+		}catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("flights", new ArrayList());
+		}
 		return "FlightSearch";
 	}
 

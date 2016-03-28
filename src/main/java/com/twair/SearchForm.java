@@ -8,6 +8,8 @@ public class SearchForm {
     private String from;
     private String to;
     private Calendar departureDate;
+    private String number;
+    private Integer numberSeats;
 
     public Calendar getDepartureDate() {
         return departureDate;
@@ -41,11 +43,33 @@ public class SearchForm {
         this.to = to;
     }
 
+    public Integer getNumberSeats() {
+        return numberSeats;
+    }
+
+    public void setNumberSeats(Integer numberSeats) {
+        if(numberSeats == null) {
+            this.numberSeats = 0;
+        }else{
+            this.numberSeats = numberSeats;
+        }
+    }
+
     @Override
     public String toString() {
         return "SearchForm{" +
                 "from='" + from + '\'' +
                 ", to='" + to + '\'' +
+                ", departureDate=" + departureDate +
+                ", numberSeats=" + numberSeats +
                 '}';
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 }
