@@ -1,6 +1,7 @@
 package com.twair;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 public class DataSource {
     public static ArrayList<String> locations = new ArrayList<String>() {{
@@ -15,8 +16,20 @@ public class DataSource {
     }};
 
     public static Flights flights = new Flights(){{
-        addFlight(new Flight(locations.get(0), locations.get(1), planes.get(0)));
-        addFlight(new Flight(locations.get(0), locations.get(1), planes.get(1)));
-        addFlight(new Flight(locations.get(0), locations.get(1), planes.get(2)));
+        try {
+            Flight flight1 = new Flight(locations.get(0), locations.get(1), planes.get(0));
+            flight1.setScheduleTime(new GregorianCalendar(2016,4,10, 9, 10, 0), new GregorianCalendar(2016,4,10, 9, 12, 0));
+            addFlight(flight1);
+
+            Flight flight2 = new Flight(locations.get(0), locations.get(1), planes.get(1));
+            flight2.setScheduleTime(new GregorianCalendar(2016,4,11, 9, 10, 0), new GregorianCalendar(2016,4,11, 9, 12, 0));
+            addFlight(flight2);
+
+            Flight flight3 = new Flight(locations.get(0), locations.get(1), planes.get(2));
+            flight3.setScheduleTime(new GregorianCalendar(2016,4,12, 9, 10, 0), new GregorianCalendar(2016,4,12, 9, 12, 0));
+            addFlight(flight3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }};
 }
