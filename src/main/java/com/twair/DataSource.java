@@ -5,19 +5,25 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class DataSource {
-    public static ArrayList<String> locations = new ArrayList<String>() {{
-        add("Hyderabad");
-        add("Bangalore");
-    }};
+    public static List<String> fetchLocations() {
+        List<String> locations = new ArrayList<String>();
+        locations.add("Hyderabad");
+        locations.add("Bangalore");
+        return locations;
+    }
 
-    public static ArrayList<Plane> planes = new ArrayList<Plane>(){{
-        add(new Plane("Boeing777-200LR(77L)", 195));
-        add(new Plane("Airbus A319 V2", 144));
-        add(new Plane("Airbus A321", 152));
-    }};
+    public static List<Plane> fetchPlanes() {
+        List<Plane> planes = new ArrayList<Plane>();
+        planes.add(new Plane("Boeing777-200LR(77L)", 195));
+        planes.add(new Plane("Airbus A319 V2", 144));
+        planes.add(new Plane("Airbus A321", 152));
+        return planes;
+    }
 
     public static FlightSearch fetchFlights() throws Exception {
         List<Flight> flightList = new ArrayList<>();
+        List<Plane> planes = fetchPlanes();
+        List<String> locations = fetchLocations();
         Flight flight1 = new Flight(locations.get(0), locations.get(1), planes.get(0), new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 9, 12, 0));
         Flight flight2 = new Flight(locations.get(0), locations.get(1), planes.get(1), new GregorianCalendar(2016,3,11, 9, 10, 0), new GregorianCalendar(2016,3,11, 9, 12, 0));
         Flight flight3 = new Flight(locations.get(0), locations.get(1), planes.get(2), new GregorianCalendar(2016,3,12, 9, 10, 0), new GregorianCalendar(2016,3,12, 9, 12, 0));

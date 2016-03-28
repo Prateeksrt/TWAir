@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class TwAirApplication {
 	@RequestMapping("/")
 	public String home(Model model) {
-        model.addAttribute("locations", DataSource.locations);
+        model.addAttribute("locations", DataSource.fetchLocations());
 		return "FlightSearch";
 	}
 
@@ -22,7 +22,7 @@ public class TwAirApplication {
 		FlightSearch matchingFlights = DataSource.fetchFlights().byLocation(searchForm.getFrom(), searchForm.getTo());
 		matchingFlights = matchingFlights.byDeparture(searchForm.getDepartureDate());
 		model.addAttribute("flights", matchingFlights.getFlightList());
-		model.addAttribute("locations", DataSource.locations);
+		model.addAttribute("locations", DataSource.fetchLocations());
 		return "FlightSearch";
 	}
 
