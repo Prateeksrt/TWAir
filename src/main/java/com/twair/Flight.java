@@ -11,10 +11,11 @@ public class Flight {
     private int numberOfSeats;
     private int basePrice;
 
-    public Flight(String source, String destination, Plane plane) {
+    public Flight(String source, String destination, Plane plane, Calendar departure, Calendar arrival) throws Exception {
         this.source = source;
         this.destination = destination;
         this.plane = plane;
+        setScheduleTime(departure, arrival);
     }
 
     public String getSource() {
@@ -25,13 +26,6 @@ public class Flight {
         return destination;
     }
 
-    public void setScheduleTime(Calendar departureTime, Calendar arrivalTime) throws Exception {
-        if(departureTime.after(arrivalTime)) {
-            throw new Exception("departure time cannot be greater than arrival time");
-        }
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
-    }
 
     public Calendar getDepartureTime() {
         return departureTime;
@@ -55,5 +49,12 @@ public class Flight {
 
     public int getBasePrice() {
         return basePrice;
+    }
+    private void setScheduleTime(Calendar departureTime, Calendar arrivalTime) throws Exception {
+        if(departureTime.after(arrivalTime)) {
+            throw new Exception("departure time cannot be greater than arrival time");
+        }
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
     }
 }
