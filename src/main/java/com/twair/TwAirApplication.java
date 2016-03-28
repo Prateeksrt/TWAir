@@ -18,9 +18,9 @@ public class TwAirApplication {
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	public String search(@ModelAttribute(value="searchForm") SearchForm searchForm, Model model) {
-		Flights matchingFlights = DataSource.flights.searchByLocation(searchForm.getFrom(), searchForm.getTo());
-		matchingFlights = matchingFlights.searchByDeparture(searchForm.getDepartureDate());
+	public String search(@ModelAttribute(value="searchForm") SearchForm searchForm, Model model) throws Exception {
+		FlightSearch matchingFlights = DataSource.fetchFlights().byLocation(searchForm.getFrom(), searchForm.getTo());
+		matchingFlights = matchingFlights.byDeparture(searchForm.getDepartureDate());
 		model.addAttribute("flights", matchingFlights.getFlightList());
 		model.addAttribute("locations", DataSource.locations);
 		return "FlightSearch";

@@ -5,27 +5,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class Flights {
+public class FlightSearch {
 
     List<Flight> flightList;
 
-    public Flights(List<Flight> flightList) {
+    public FlightSearch(List<Flight> flightList) {
         this.flightList = flightList;
-    }
-
-    public Flights() {
-        this.flightList = new ArrayList<>();
-    }
-
-    public void addFlight(Flight flight) {
-        flightList.add(flight);
     }
 
     public List<Flight> getFlightList() {
         return flightList;
     }
 
-    public Flights searchByLocation(String source, String destination) {
+    public FlightSearch byLocation(String source, String destination) {
         if(source == null || source.isEmpty() || destination == null || destination.isEmpty()) {
             throw new IllegalArgumentException("source cannot be null");
         }
@@ -35,10 +27,10 @@ public class Flights {
                 matchingFlights.add(flight);
             }
         }
-        return new Flights(matchingFlights);
+        return new FlightSearch(matchingFlights);
     }
 
-    public Flights searchByDeparture(Calendar departureDate) {
+    public FlightSearch byDeparture(Calendar departureDate) {
         if(departureDate == null) {
             return this;
         }
@@ -51,6 +43,6 @@ public class Flights {
                 }
             }
         }
-        return new Flights(matchingFlights);
+        return new FlightSearch(matchingFlights);
     }
 }

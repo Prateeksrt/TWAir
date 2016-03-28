@@ -4,16 +4,17 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class FlightsTests {
+public class FlightSearchTests {
     private String source;
     private String destination;
     private Calendar departure;
     private Calendar arrival;
-    private Flights allFlights;
+    private FlightSearch allFlights;
 
     @Before
     public void setUp() throws Exception {
@@ -26,9 +27,10 @@ public class FlightsTests {
         Flight flight1 = new Flight(source, destination, plane1, new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 11, 10, 0));
         Flight flight2 = new Flight(source, destination, plane1, new GregorianCalendar(2016,4,10, 9, 10, 0), new GregorianCalendar(2016,4,10, 11, 10, 0));
 
-        allFlights = new Flights();
-        allFlights.addFlight(flight1);
-        allFlights.addFlight(flight2);
+        List<Flight> flightList = new ArrayList<>();
+        flightList.add(flight1);
+        flightList.add(flight2);
+        allFlights = new FlightSearch(flightList);
     }
 
     @Test
@@ -38,12 +40,14 @@ public class FlightsTests {
         Flight flight1 = new Flight(source, destination, plane1, departure, arrival);
         Flight flight2 = new Flight("TestSource1", destination, plane2, departure, arrival);
         Flight flight3 = new Flight(source, destination, plane1, departure, arrival);
-        Flights allFlights = new Flights();
-        allFlights.addFlight(flight1);
-        allFlights.addFlight(flight2);
-        allFlights.addFlight(flight3);
+        List<Flight> flightList = new ArrayList<>();
+        flightList.add(flight1);
+        flightList.add(flight2);
+        flightList.add(flight3);
+        allFlights = new FlightSearch(flightList);
 
-        List<Flight> flights = allFlights.searchByLocation(source, destination).getFlightList();
+
+        List<Flight> flights = allFlights.byLocation(source, destination).getFlightList();
         Assert.assertEquals(source, flights.get(0).getSource());
         Assert.assertEquals(destination, flights.get(0).getDestination());
         Assert.assertEquals(source, flights.get(1).getSource());
@@ -53,28 +57,28 @@ public class FlightsTests {
 
     @Test(expected=IllegalArgumentException.class)
     public void shouldMandateSource() throws Exception {
-        allFlights.searchByLocation(null, destination);
+        allFlights.byLocation(null, destination);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void sourceCannotBeEmpty() throws Exception {
-        allFlights.searchByLocation("", destination);
+        allFlights.byLocation("", destination);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void shouldMandateDestination() throws Exception {
-        allFlights.searchByLocation(source, null);
+        allFlights.byLocation(source, null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void destinationCannotBeEmpty() throws Exception {
-        allFlights.searchByLocation(source, "");
+        allFlights.byLocation(source, "");
     }
 
     @Test
     public void shouldReturnMatchingFlightsBasedOnDepartureDate() throws Exception {
         Calendar departureDate = new GregorianCalendar(2016,3,10);
-        List<Flight> flights = allFlights.searchByDeparture(departureDate).getFlightList();
+        List<Flight> flights = allFlights.byDeparture(departureDate).getFlightList();
         Assert.assertEquals(source, flights.get(0).getSource());
         Assert.assertEquals(destination, flights.get(0).getDestination());
         Assert.assertEquals(1, flights.size());
@@ -82,7 +86,7 @@ public class FlightsTests {
 
     @Test
     public void shouldNotConsiderDepartureDateIfNull() throws Exception {
-        List<Flight> flights = allFlights.searchByDeparture(null).getFlightList();
+        List<Flight> flights = allFlights.byDeparture(null).getFlightList();
         Assert.assertEquals(2, flights.size());
     }
 }

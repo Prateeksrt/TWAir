@@ -2,6 +2,7 @@ package com.twair;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class DataSource {
     public static ArrayList<String> locations = new ArrayList<String>() {{
@@ -15,18 +16,16 @@ public class DataSource {
         add(new Plane("Airbus A321", 152));
     }};
 
-    public static Flights flights = new Flights(){{
-        try {
-            Flight flight1 = new Flight(locations.get(0), locations.get(1), planes.get(0), new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 9, 12, 0));
-            addFlight(flight1);
+    public static FlightSearch fetchFlights() throws Exception {
+        List<Flight> flightList = new ArrayList<>();
+        Flight flight1 = new Flight(locations.get(0), locations.get(1), planes.get(0), new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 9, 12, 0));
+        Flight flight2 = new Flight(locations.get(0), locations.get(1), planes.get(1), new GregorianCalendar(2016,3,11, 9, 10, 0), new GregorianCalendar(2016,3,11, 9, 12, 0));
+        Flight flight3 = new Flight(locations.get(0), locations.get(1), planes.get(2), new GregorianCalendar(2016,3,12, 9, 10, 0), new GregorianCalendar(2016,3,12, 9, 12, 0));
 
-            Flight flight2 = new Flight(locations.get(0), locations.get(1), planes.get(1), new GregorianCalendar(2016,3,11, 9, 10, 0), new GregorianCalendar(2016,3,11, 9, 12, 0));
-            addFlight(flight2);
-
-            Flight flight3 = new Flight(locations.get(0), locations.get(1), planes.get(2), new GregorianCalendar(2016,3,12, 9, 10, 0), new GregorianCalendar(2016,3,12, 9, 12, 0));
-            addFlight(flight3);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }};
+        flightList.add(flight1);
+        flightList.add(flight2);
+        flightList.add(flight3);
+        FlightSearch allFlights = new FlightSearch(flightList);
+        return allFlights;
+    }
 }
