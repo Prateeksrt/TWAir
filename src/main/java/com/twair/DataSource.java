@@ -40,10 +40,13 @@ public class DataSource {
         List<String> locations = fetchLocations();
         Flight flight1 = new Flight("F001", locations.get(0), locations.get(1), planes.get(0), new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 9, 12, 0));
         flight1.setBasePrice(ClassType.ECONOMY, 6000);
+        flight1.setBasePrice(ClassType.BUSINESS, 13000);
+        flight1.setBasePrice(ClassType.FIRST, 20000);
         Flight flight2 = new Flight("F002", locations.get(0), locations.get(1), planes.get(1), new GregorianCalendar(2016,3,11, 9, 10, 0), new GregorianCalendar(2016,3,11, 9, 12, 0));
         flight2.setBasePrice(ClassType.ECONOMY, 4000);
         Flight flight3 = new Flight("F003", locations.get(0), locations.get(1), planes.get(2), new GregorianCalendar(2016,3,12, 9, 10, 0), new GregorianCalendar(2016,3,12, 9, 12, 0));
         flight3.setBasePrice(ClassType.ECONOMY, 5000);
+        flight3.setBasePrice(ClassType.BUSINESS, 10000);
 
         flightList.add(flight1);
         flightList.add(flight2);

@@ -50,7 +50,7 @@ public class SearchForm {
 
     public void setNumberSeats(Integer numberSeats) {
         if(numberSeats == null) {
-            this.numberSeats = 0;
+            this.numberSeats = 1;
         }else{
             this.numberSeats = numberSeats;
         }

@@ -80,4 +80,11 @@ public class FlightTests {
         flight.setBasePrice(ClassType.ECONOMY, 1000);
         Assert.assertEquals(1000, flight.getBasePrice(ClassType.ECONOMY));
     }
+
+    @Test
+    public void shouldReturnZeroIfBasePriceIsNotAvailableForTheClassType() throws Exception {
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival);
+        flight.setBasePrice(ClassType.ECONOMY, 1000);
+        Assert.assertEquals(0, flight.getBasePrice(ClassType.BUSINESS));
+    }
 }

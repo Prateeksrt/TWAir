@@ -9,7 +9,7 @@ import java.util.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class PriceTests {
+public class BasePriceTests {
     private int numberOfSeats;
     private Flight flight = mock(Flight.class);
     private String source;
@@ -42,14 +42,14 @@ public class PriceTests {
     public void shouldGiveTotalPriceForNumberOfSeats() throws Exception {
         BasePrice basePrice = new BasePrice();
         when(flight.getBasePrice(ClassType.ECONOMY)).thenReturn(6000);
-        int totalCost = basePrice.calculate(flight, numberOfSeats);
+        int totalCost = basePrice.calculate(flight, ClassType.ECONOMY, numberOfSeats);
         Assert.assertEquals(30000, totalCost);
     }
 
     @Test
     public void shouldCalculatePriceForListOfFlights() throws Exception {
         BasePrice basePrice = new BasePrice();
-        Map<String, Integer> priceMap = basePrice.calculate(flightList, numberOfSeats);
+        Map<String, Integer> priceMap = basePrice.calculate(flightList, ClassType.ECONOMY, numberOfSeats);
         Assert.assertEquals(new Integer(30000), priceMap.get("F001"));
         Assert.assertEquals(new Integer(20000), priceMap.get("F002"));
     }

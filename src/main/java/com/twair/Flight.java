@@ -45,7 +45,10 @@ public class Flight {
     }
 
     public int getBasePrice(ClassType classType) {
-        return basePriceMap.get(classType);
+        if( basePriceMap.containsKey(classType) ) {
+            return basePriceMap.get(classType);
+        }
+        return 0;
     }
 
     private void setScheduleTime(Calendar departureTime, Calendar arrivalTime) throws Exception {
