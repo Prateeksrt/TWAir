@@ -10,15 +10,17 @@ public class Flight {
     private Plane plane;
     private Calendar departureTime;
     private Calendar arrivalTime;
-    private Map<ClassType, Integer> availableSeats = new HashMap<>();
-    private Map<ClassType, Integer> basePriceMap = new HashMap<>();
     private String number;
+    private Map<ClassType, TravelClass> travelClasses = new HashMap<>();
 
-    public Flight(String number, String source, String destination, Plane plane, Calendar departure, Calendar arrival) throws Exception {
+    public Flight(String number, String source, String destination, Plane plane, Calendar departure, Calendar arrival, Map<ClassType, Double> basePriceMap) throws Exception {
         this.source = source;
         this.destination = destination;
         this.plane = plane;
-        this.availableSeats.putAll(plane.getClassType());
+        for (ClassType key : plane.getClassType().keySet()) {
+            TravelClass travelClass = new TravelClass(key, plane.getClassType().get(key), basePriceMap.get(key));
+            travelClasses.put(key, travelClass);
+        }
         setScheduleTime(departure, arrival);
         this.number = number;
     }
@@ -40,15 +42,11 @@ public class Flight {
         return arrivalTime;
     }
 
-    public void setBasePrice(ClassType classType, int basePrice) {
-        basePriceMap.put(classType, basePrice);
-    }
-
-    public int getBasePrice(ClassType classType) {
-        if( basePriceMap.containsKey(classType) ) {
-            return basePriceMap.get(classType);
+    public Double getBasePrice(ClassType classType) {
+        if( travelClasses.containsKey(classType) ) {
+            return travelClasses.get(classType).getBasePrice();
         }
-        return 0;
+        return 0.0;
     }
 
     private void setScheduleTime(Calendar departureTime, Calendar arrivalTime) throws Exception {
@@ -59,22 +57,18 @@ public class Flight {
         this.arrivalTime = arrivalTime;
     }
 
-    public int availableSeats(ClassType classType) {
-        if( availableSeats.containsKey(classType) ) {
-            return availableSeats.get(classType);
-        }
-        return 0;
-    }
-
     public String getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public boolean hasClass(ClassType classType) {
+        return travelClasses.containsKey(classType);
     }
 
-    public boolean hasClass(ClassType classType) {
-        return availableSeats.containsKey(classType);
+    public boolean canBook(ClassType classType, Integer numberOfSeats) {
+        if(travelClasses.containsKey(classType)) {
+            return travelClasses.get(classType).canBook(numberOfSeats);
+        }
+        return false;
     }
 }

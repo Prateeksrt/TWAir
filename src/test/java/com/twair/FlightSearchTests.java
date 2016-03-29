@@ -12,6 +12,7 @@ public class FlightSearchTests {
     private Calendar departure;
     private Calendar arrival;
     private FlightSearch allFlights;
+    Map<ClassType, Double> priceMap = new HashMap<>();
 
     @Before
     public void setUp() throws Exception {
@@ -28,8 +29,10 @@ public class FlightSearchTests {
         classMap2.put(ClassType.ECONOMY, 5);
         classMap2.put(ClassType.BUSINESS, 5);
         Plane plane2 = new Plane("type1", classMap2);
-        Flight flight1 = new Flight("F001", source, destination, plane1, new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 11, 10, 0));
-        Flight flight2 = new Flight("F002", source, destination, plane2, new GregorianCalendar(2016,4,10, 9, 10, 0), new GregorianCalendar(2016,4,10, 11, 10, 0));
+        Map<ClassType, Double> priceMap = new HashMap<>();
+        priceMap.put(ClassType.ECONOMY, 1000.0);
+        Flight flight1 = new Flight("F001", source, destination, plane1, new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 11, 10, 0), priceMap);
+        Flight flight2 = new Flight("F002", source, destination, plane2, new GregorianCalendar(2016,4,10, 9, 10, 0), new GregorianCalendar(2016,4,10, 11, 10, 0), priceMap);
 
         List<Flight> flightList = new ArrayList<>();
         flightList.add(flight1);
@@ -48,9 +51,9 @@ public class FlightSearchTests {
         Map<ClassType, Integer> classMap2 = new HashMap<>();
         classMap1.put(ClassType.ECONOMY, 60);
         Plane plane2 = new Plane("type2", classMap2);
-        Flight flight1 = new Flight("F001", source, destination, plane1, departure, arrival);
-        Flight flight2 = new Flight("F002", "TestSource1", destination, plane2, departure, arrival);
-        Flight flight3 = new Flight("F003", source, destination, plane1, departure, arrival);
+        Flight flight1 = new Flight("F001", source, destination, plane1, departure, arrival, priceMap);
+        Flight flight2 = new Flight("F002", "TestSource1", destination, plane2, departure, arrival, priceMap);
+        Flight flight3 = new Flight("F003", source, destination, plane1, departure, arrival, priceMap);
         List<Flight> flightList = new ArrayList<>();
         flightList.add(flight1);
         flightList.add(flight2);

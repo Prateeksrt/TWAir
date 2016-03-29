@@ -27,10 +27,14 @@ public class BasePriceTests {
         Map<ClassType, Integer> classTypeMap2 = new HashMap<ClassType, Integer>();
         classTypeMap2.put(ClassType.ECONOMY, 30);
         Plane plane2 = new Plane("type1", classTypeMap2);
-        Flight flight1 = new Flight("F001", source, destination, plane1, new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 11, 10, 0));
-        flight1.setBasePrice(ClassType.ECONOMY, 6000);
-        Flight flight2 = new Flight("F002", source, destination, plane2, new GregorianCalendar(2016,4,10, 9, 10, 0), new GregorianCalendar(2016,4,10, 11, 10, 0));
-        flight2.setBasePrice(ClassType.ECONOMY, 4000);
+
+        Map<ClassType, Double> basePriceMap = new HashMap<>();
+        basePriceMap.put(ClassType.ECONOMY, 6000.0);
+        Flight flight1 = new Flight("F001", source, destination, plane1, new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 11, 10, 0), basePriceMap);
+
+        basePriceMap = new HashMap<>();
+        basePriceMap.put(ClassType.ECONOMY, 4000.0);
+        Flight flight2 = new Flight("F002", source, destination, plane2, new GregorianCalendar(2016,4,10, 9, 10, 0), new GregorianCalendar(2016,4,10, 11, 10, 0), basePriceMap);
 
         flightList = new ArrayList<>();
         flightList.add(flight1);
@@ -41,16 +45,16 @@ public class BasePriceTests {
     @Test
     public void shouldGiveTotalPriceForNumberOfSeats() throws Exception {
         BasePrice basePrice = new BasePrice();
-        when(flight.getBasePrice(ClassType.ECONOMY)).thenReturn(6000);
-        int totalCost = basePrice.calculate(flight, ClassType.ECONOMY, numberOfSeats);
-        Assert.assertEquals(30000, totalCost);
+        when(flight.getBasePrice(ClassType.ECONOMY)).thenReturn(6000.0);
+        Double totalCost = basePrice.calculate(flight, ClassType.ECONOMY, numberOfSeats);
+        Assert.assertEquals(30000, totalCost.intValue());
     }
 
     @Test
     public void shouldCalculatePriceForListOfFlights() throws Exception {
         BasePrice basePrice = new BasePrice();
-        Map<String, Integer> priceMap = basePrice.calculate(flightList, ClassType.ECONOMY, numberOfSeats);
-        Assert.assertEquals(new Integer(30000), priceMap.get("F001"));
-        Assert.assertEquals(new Integer(20000), priceMap.get("F002"));
+        Map<String, Double> priceMap = basePrice.calculate(flightList, ClassType.ECONOMY, numberOfSeats);
+        Assert.assertEquals(30000, priceMap.get("F001").intValue());
+        Assert.assertEquals(20000, priceMap.get("F002").intValue());
     }
 }

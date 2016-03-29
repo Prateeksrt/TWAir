@@ -52,7 +52,7 @@ public class FlightSearch {
         }
         List<Flight> matchingFlights = new ArrayList<>();
         for (Flight flight : flightList) {
-            if(flight.availableSeats(classType) >= numberOfSeats) {
+            if(flight.canBook(classType, numberOfSeats)) {
                 matchingFlights.add(flight);
             }
         }
