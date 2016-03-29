@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FlightTests {
     private String source;
@@ -18,7 +20,9 @@ public class FlightTests {
     public void setUp() throws Exception {
         source = "TestSource";
         dest = "TestDestination";
-        plane = new Plane("type", 30);
+        Map<ClassType, Integer> classMap = new HashMap<>();
+        classMap.put(ClassType.ECONOMY, 30);
+        plane = new Plane("type", classMap);
         departure = new GregorianCalendar(2016,3,10, 9, 10, 0);
         arrival = new GregorianCalendar(2016,3,10, 10, 10, 0);
     }
@@ -49,13 +53,31 @@ public class FlightTests {
     @Test
     public void availableSeatsShouldBeAsPlaneSeatsByDefault() throws Exception {
         Flight flight = new Flight("F001", source, dest, plane, departure, arrival);
-        Assert.assertEquals(30, flight.availableSeats());
+        Assert.assertEquals(30, flight.availableSeats(ClassType.ECONOMY));
     }
 
     @Test
-    public void shouldHaveBasePrice() throws Exception {
+    public void availableSeatsShouldZeorIfSetasOfThatClassIsNotAvailable() throws Exception {
         Flight flight = new Flight("F001", source, dest, plane, departure, arrival);
-        flight.setBasePrice(1000);
-        Assert.assertEquals(1000, flight.getBasePrice());
+        Assert.assertEquals(0, flight.availableSeats(ClassType.BUSINESS));
+    }
+
+    @Test
+    public void shouldReturnTrueIfThereAreSeatsOfThatClass() throws Exception {
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival);
+        Assert.assertTrue(flight.hasClass(ClassType.ECONOMY));
+    }
+
+    @Test
+    public void shouldReturnFalseIfThereAreNoSeatsOfThatClass() throws Exception {
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival);
+        Assert.assertFalse(flight.hasClass(ClassType.BUSINESS));
+    }
+
+    @Test
+    public void shouldHaveBasePriceForSpecifiedClass() throws Exception {
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival);
+        flight.setBasePrice(ClassType.ECONOMY, 1000);
+        Assert.assertEquals(1000, flight.getBasePrice(ClassType.ECONOMY));
     }
 }

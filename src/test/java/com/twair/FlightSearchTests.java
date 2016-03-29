@@ -4,10 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 public class FlightSearchTests {
     private String source;
@@ -23,8 +20,14 @@ public class FlightSearchTests {
         departure = new GregorianCalendar(2016,3,10, 9, 10, 0);
         arrival = new GregorianCalendar(2016,3,10, 10, 10, 0);
 
-        Plane plane1 = new Plane("type1", 30);
-        Plane plane2 = new Plane("type1", 5);
+        Map<ClassType, Integer> classMap1 = new HashMap<>();
+        classMap1.put(ClassType.ECONOMY, 30);
+        Plane plane1 = new Plane("type1", classMap1);
+
+        Map<ClassType, Integer> classMap2 = new HashMap<>();
+        classMap2.put(ClassType.ECONOMY, 5);
+        classMap2.put(ClassType.BUSINESS, 5);
+        Plane plane2 = new Plane("type1", classMap2);
         Flight flight1 = new Flight("F001", source, destination, plane1, new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 11, 10, 0));
         Flight flight2 = new Flight("F002", source, destination, plane2, new GregorianCalendar(2016,4,10, 9, 10, 0), new GregorianCalendar(2016,4,10, 11, 10, 0));
 
@@ -36,8 +39,15 @@ public class FlightSearchTests {
 
     @Test
     public void shouldReturnListOfFlightsForSourceDestination() throws Exception {
-        Plane plane1 = new Plane("type1", 30);
-        Plane plane2 = new Plane("type2", 60);
+
+        Map<ClassType, Integer> classMap1 = new HashMap<>();
+        classMap1.put(ClassType.ECONOMY, 30);
+        classMap1.put(ClassType.BUSINESS, 30);
+        Plane plane1 = new Plane("type1", classMap1);
+
+        Map<ClassType, Integer> classMap2 = new HashMap<>();
+        classMap1.put(ClassType.ECONOMY, 60);
+        Plane plane2 = new Plane("type2", classMap2);
         Flight flight1 = new Flight("F001", source, destination, plane1, departure, arrival);
         Flight flight2 = new Flight("F002", "TestSource1", destination, plane2, departure, arrival);
         Flight flight3 = new Flight("F003", source, destination, plane1, departure, arrival);
@@ -94,15 +104,20 @@ public class FlightSearchTests {
     @Test
     public void shouldFilterByAvailableSeats() throws Exception {
         int numberOfSeats = 10;
-        List<Flight> matchingFlights = allFlights.byAvailableSeats(numberOfSeats).getFlightList();;
-        Assert.assertEquals(source, matchingFlights.get(0).getSource());
-        Assert.assertEquals(destination, matchingFlights.get(0).getDestination());
-        Assert.assertEquals(1, matchingFlights.size());
+        List<Flight> matchingFlights = allFlights.byAvailableSeats(ClassType.BUSINESS, numberOfSeats).getFlightList();;
+        Assert.assertEquals(0, matchingFlights.size());
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void numberOfSeatsCannotBeNegative() throws Exception {
-        allFlights.byAvailableSeats(-10);
+        allFlights.byAvailableSeats(ClassType.ECONOMY, -10);
     }
 
+    @Test
+    public void shouldFilterBasedOnClassType() throws Exception {
+        List<Flight> matchingFlights = allFlights.byClassType(ClassType.BUSINESS).getFlightList();
+        Assert.assertEquals(source, matchingFlights.get(0).getSource());
+        Assert.assertEquals(destination, matchingFlights.get(0).getDestination());
+        Assert.assertEquals(1, matchingFlights.size());
+    }
 }

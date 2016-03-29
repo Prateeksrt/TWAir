@@ -1,8 +1,6 @@
 package com.twair;
 
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 public class DataSource {
     final private static DataSource dataSource = new DataSource();
@@ -19,9 +17,20 @@ public class DataSource {
 
     public List<Plane> fetchPlanes() {
         List<Plane> planes = new ArrayList<Plane>();
-        planes.add(new Plane("Boeing777-200LR(77L)", 195));
-        planes.add(new Plane("Airbus A319 V2", 144));
-        planes.add(new Plane("Airbus A321", 152));
+        Map<ClassType, Integer> classTypeMap = new HashMap<>();
+        classTypeMap.put(ClassType.ECONOMY, 195);
+        classTypeMap.put(ClassType.BUSINESS, 35);
+        classTypeMap.put(ClassType.FIRST, 8);
+        planes.add(new Plane("Boeing777-200LR(77L)", classTypeMap));
+
+        classTypeMap = new HashMap<>();
+        classTypeMap.put(ClassType.ECONOMY, 144);
+        planes.add(new Plane("Airbus A319 V2", classTypeMap));
+
+        classTypeMap = new HashMap<>();
+        classTypeMap.put(ClassType.ECONOMY, 152);
+        classTypeMap.put(ClassType.BUSINESS, 20);
+        planes.add(new Plane("Airbus A321", classTypeMap));
         return planes;
     }
 
@@ -30,11 +39,11 @@ public class DataSource {
         List<Plane> planes = fetchPlanes();
         List<String> locations = fetchLocations();
         Flight flight1 = new Flight("F001", locations.get(0), locations.get(1), planes.get(0), new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 9, 12, 0));
-        flight1.setBasePrice(6000);
+        flight1.setBasePrice(ClassType.ECONOMY, 6000);
         Flight flight2 = new Flight("F002", locations.get(0), locations.get(1), planes.get(1), new GregorianCalendar(2016,3,11, 9, 10, 0), new GregorianCalendar(2016,3,11, 9, 12, 0));
-        flight2.setBasePrice(4000);
+        flight2.setBasePrice(ClassType.ECONOMY, 4000);
         Flight flight3 = new Flight("F003", locations.get(0), locations.get(1), planes.get(2), new GregorianCalendar(2016,3,12, 9, 10, 0), new GregorianCalendar(2016,3,12, 9, 12, 0));
-        flight3.setBasePrice(5000);
+        flight3.setBasePrice(ClassType.ECONOMY, 5000);
 
         flightList.add(flight1);
         flightList.add(flight2);

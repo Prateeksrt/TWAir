@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Price {
+public class BasePrice {
     public int calculate(Flight flight, int numberOfSeats) {
-        return flight.getBasePrice() * numberOfSeats;
+        return flight.getBasePrice(ClassType.ECONOMY) * numberOfSeats;
     }
 
     public Map<String, Integer> calculate(List<Flight> flights, int numberOfSeats) {

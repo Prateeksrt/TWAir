@@ -7,7 +7,7 @@ import java.util.List;
 
 public class FlightSearch {
 
-    List<Flight> flightList;
+    private List<Flight> flightList;
 
     public FlightSearch(List<Flight> flightList) {
         this.flightList = flightList;
@@ -46,13 +46,23 @@ public class FlightSearch {
         return new FlightSearch(matchingFlights);
     }
 
-    public FlightSearch byAvailableSeats(int numberOfSeats) {
+    public FlightSearch byAvailableSeats(ClassType classType, int numberOfSeats) {
         if(numberOfSeats < 0) {
             throw new IllegalArgumentException("number of seats can not be negative");
         }
         List<Flight> matchingFlights = new ArrayList<>();
         for (Flight flight : flightList) {
-            if(flight.availableSeats() >= numberOfSeats) {
+            if(flight.availableSeats(classType) >= numberOfSeats) {
+                matchingFlights.add(flight);
+            }
+        }
+        return new FlightSearch(matchingFlights);
+    }
+
+    public FlightSearch byClassType(ClassType classType) {
+        List<Flight> matchingFlights = new ArrayList<>();
+        for (Flight flight : flightList) {
+            if(flight.hasClass(classType)) {
                 matchingFlights.add(flight);
             }
         }
