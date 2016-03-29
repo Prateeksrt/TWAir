@@ -3,7 +3,12 @@ package com.twair;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(value = FastFillingPrice.class)
 public class TravelClassTests {
     private int totalSeats;
     private TravelClass economyClass;
@@ -39,5 +44,13 @@ public class TravelClassTests {
     public void shouldReturnFalseIfBookingCanNotBeDone() throws Exception {
         Integer numberOfSetas = 110;
         Assert.assertFalse(economyClass.canBook(numberOfSetas));
+    }
+
+    /*became integration test.*/
+    @Test
+    public void shouldReturnExtraCostRatioForEconomyClassBasedOnSeatFillingRate() throws Exception {
+        Integer numberOfSeats = 70;
+        economyClass.book(numberOfSeats);
+        Assert.assertEquals(0.3, economyClass.getExtraCostRatio(), 0.01);
     }
 }

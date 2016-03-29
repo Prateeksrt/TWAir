@@ -6,12 +6,21 @@ public class TravelClass {
     private ClassType classType;
     private Integer totalSeats;
     private Integer occupiedSeats;
+    private FastFillingPrice fastFillingPrice;
 
     public TravelClass(ClassType classType, Integer totalSeats, Double basePrice) {
         this.classType = classType;
         this.totalSeats = totalSeats;
         this.occupiedSeats = 0;
         this.basePrice = basePrice;
+        if(classType == ClassType.ECONOMY) {
+            double[][] percentageBreak = new double[][]{
+                    { 0, 0 },
+                    { 40, 0.3 },
+                    { 90, 0.6 }
+            };
+            fastFillingPrice = new FastFillingPrice(percentageBreak);
+        }
     }
 
     public void book(int numberOfSeats) throws Exception {
@@ -34,5 +43,12 @@ public class TravelClass {
 
     public Double getBasePrice() {
         return basePrice;
+    }
+
+    public double getExtraCostRatio() {
+        if(fastFillingPrice != null) {
+            return fastFillingPrice.basePriceRatio(getOccupiedPercentage());
+        }
+        return 0.0;
     }
 }

@@ -44,7 +44,7 @@ public class Flight {
 
     public Double getBasePrice(ClassType classType) {
         if( travelClasses.containsKey(classType) ) {
-            return travelClasses.get(classType).getBasePrice();
+            return travelClasses.get(classType).getBasePrice() * (1 + getTotalExtraCostRatioOnBasePrice(classType));
         }
         return 0.0;
     }
@@ -70,5 +70,15 @@ public class Flight {
             return travelClasses.get(classType).canBook(numberOfSeats);
         }
         return false;
+    }
+
+    public void book(ClassType classType, Integer numberOfSeats) throws Exception {
+        if(travelClasses.containsKey(classType)) {
+            travelClasses.get(classType).book(numberOfSeats);
+        }
+    }
+
+    private double getTotalExtraCostRatioOnBasePrice(ClassType classType) {
+        return travelClasses.get(classType).getExtraCostRatio();
     }
 }

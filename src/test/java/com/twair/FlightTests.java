@@ -65,13 +65,21 @@ public class FlightTests {
     @Test
     public void shouldHaveBasePriceForSpecifiedClass() throws Exception {
         Flight flight = new Flight("F001", source, dest, plane, departure, arrival, basePriceMap);
-        Assert.assertEquals(5000, flight.getBasePrice(ClassType.ECONOMY).intValue());
+        Assert.assertEquals(5000.0, flight.getBasePrice(ClassType.ECONOMY).intValue(), 0.01);
     }
 
     @Test
     public void shouldReturnZeroIfBasePriceIsNotAvailableForTheClassType() throws Exception {
         Flight flight = new Flight("F001", source, dest, plane, departure, arrival, basePriceMap);
         Assert.assertEquals(0, flight.getBasePrice(ClassType.BUSINESS).intValue());
+    }
+
+    /*became integration test*/
+    @Test
+    public void shouldAddExtraCostToBasePriceWhenSeatsAreFillingFaster() throws Exception {
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, basePriceMap);
+        flight.book(ClassType.ECONOMY, 20);
+        Assert.assertEquals(6500, flight.getBasePrice(ClassType.ECONOMY).intValue());
     }
 
     @Test

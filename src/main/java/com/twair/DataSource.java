@@ -43,6 +43,7 @@ public class DataSource {
         basePriceMap.put(ClassType.BUSINESS, 13000.0);
         basePriceMap.put(ClassType.FIRST, 20000.0);
         Flight flight1 = new Flight("F001", locations.get(0), locations.get(1), planes.get(0), new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 9, 12, 0), basePriceMap);
+        flight1.book(ClassType.ECONOMY, 190);
 
         basePriceMap = new HashMap<>();
         basePriceMap.put(ClassType.ECONOMY, 4000.0);
